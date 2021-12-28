@@ -1,4 +1,4 @@
-# [Service](https://kubernetes.io/docs/concepts/services-networking/service/)
+# [Services](https://kubernetes.io/docs/concepts/services-networking/service/)
 
 ## ClusterIP
 ```

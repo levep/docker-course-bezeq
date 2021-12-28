@@ -1,4 +1,4 @@
-# [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
+# [Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
 
 ### Create Deployment
 ```

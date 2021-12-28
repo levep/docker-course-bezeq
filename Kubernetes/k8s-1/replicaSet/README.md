@@ -1,5 +1,5 @@
 
-## [ReplicaSet](https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/)
+# [ReplicaSets](https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/)
 
 ```
 kubectl apply -f kuard-rs.yml
