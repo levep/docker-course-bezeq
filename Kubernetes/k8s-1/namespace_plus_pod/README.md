@@ -39,14 +39,16 @@ Let's create two new namespaces to hold our work. Create the development and pro
     $ kubectl create -f namespace-dev.yaml
     $ kubectl create -f namespace-prod.yaml
 
-```kubectl create deployment snowflake --image=k8s.gcr.io/serve_hostname  -n=development --replicas=2```
+```
+kubectl create deployment snowflake --image=k8s.gcr.io/serve_hostname  -n=development --replicas=2```
 
-```kubectl create deployment cattle --image=k8s.gcr.io/serve_hostname -n=production```
+kubectl create deployment cattle --image=k8s.gcr.io/serve_hostname -n=production```
 
-```kubectl scale deployment cattle --replicas=5 -n=production```
-
+kubectl scale deployment cattle --replicas=5 -n=production
+```
+## [kubectl cheatsheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/)
 -----
-## [Creating namespace](https://kubernetes.io/docs/tasks/administer-cluster/namespaces/#creating-a-new-namespace)
+### [Creating namespace](https://kubernetes.io/docs/tasks/administer-cluster/namespaces/#creating-a-new-namespace)
 
 ```
 kubectl delete -f .\namespace-dev.yaml 
