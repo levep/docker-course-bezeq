@@ -1,91 +1,53 @@
-    microk8s.kubectl create -f kuard-pod.yaml
+## Pod creation 
 
-    microk8s.kubectl port-forward  --address 0.0.0.0 kuard  8080:8080
+```
+    kubectl create -f kuard-pod-full.yaml
 
-    microk8s.kubectl exec kuard date
+    kubectl port-forward  --address 0.0.0.0 kuard  8080:8080
+```
 
-    microk8s.kubectl exec -it kuard ash
+## kubectl exec
 
-    microk8s.kubectl cp <pod-name>:/captures/capture3.txt ./capture3.txt
+```
+    kubectl exec kuard -- date
 
-    microk8s.kubectl cp $HOME/config.txt <pod-name>:/config.txt
+    kubectl exec -it kuard -- ash
+```
+## Pod health check
 
-==Pod with health check==
-
-microk8s.kubectl create -f kuard-pod-health.yaml
-
-    # Details of the restart can be found with kubectl describe kuard.
-
-    # Kubernetes also supports tcpSocket health checks that
-    # open a TCP socket; if the connection is successful, the probe succeeds. This style of
-    # probe is useful for non-HTTP applications; for example, databases or other non–
-    # HTTP-based APIs.
-
-    # Kubernetes allows exec probes. These execute a script or program in the
-    # context of the container. Following typical convention, if this script returns a zero
-    # exit code, the probe succeeds; otherwise, it fails. exec scripts are often useful for
-    # custom application validation logic that doesn’t fit neatly into an HTTP call.
-
-
-== Resource Management
-
-    # With scheduling systems like Kubernetes managing resource packing, you can drive
-    # your utilization to greater than 50%.
-
-    # Kubernetes allows users to specify two different resource metrics. Resource requests
-    # specify the minimum amount of a resource required to run the application. Resource
-    # limits specify the maximum amount of a resource that an application can consume.
-
-    # When you establish limits on a container, the kernel is configured to ensure that
-    # consumption cannot exceed these limits. A container with a CPU limit of 0.5 cores
-    # will only ever get 0.5 cores, even if the CPU is otherwise idle. A container with a
-    # memory limit of 256 MB will not be allowed additional memory (e.g., malloc will
-    # fail) if its memory usage exceeds 256 MB.
-
- == Persisting Data with Volimes
-    # Few and recommended patterns :
-        - Communication/synchronization
-            Two containers used a shared volume to serve a site while keeping it synchronized to a remote Git location.
-            To achive this. the Pod uses an emptyDir volume.
-        - Cashe :
-            application may use a volume that is valuable for performance, but not required
-            for correct operation of the application. 
-            emptyDir works well for the cache use case as well.
-        - Persistent data :
-            Sometimes you will use a volume for truly persistent data—data that is independent
-            of the lifespan of a particular Pod, and should move between nodes in the cluster if a
-            node fails or a Pod moves to a different machine for some reason. To achieve this,
-            Kubernetes supports a wide variety of remote network storage volumes, including
-            widely supported protocols like NFS or iSCSI as well as cloud provider network
-            storage like Amazon’s Elastic Block Store, Azure’s Files and Disk Storage, as well
-            as Google’s Persistent Disk.
-        - Mounting the host filesystem :
-            Other applications don’t actually need a persistent volume, but they do need some
-            access to the underlying host filesystem. For example, they may need access to the
-            /dev filesystem in order to perform raw block-level access to a device on the system.
-            For these cases, Kubernetes supports the hostDir volume, which can mount
-            arbitrary locations on the worker node into the container.
+[Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)
 
 
 
-== Labels ==
+## Resource Management
+[Resource Management for Pods and Containers
+](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)
 
-microk8s.kubectl run alpaca-prod --image=gcr.io/kuar-demo/kuard-amd64:1 --replicas=2 --labels="ver=1,app=alpaca,env=prod"
-microk8s.kubectl run alpaca-test --image=gcr.io/kuar-demo/kuard-amd64:2 --replicas=1 --labels="ver=2,app=alpaca,env=test"
+ ## Persisting Data with Volimes
+ [Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
 
-microk8s.kubectl run bandicoot-prod --image=gcr.io/kuar-demo/kuard-amd64:2 --replicas=2 --labels="ver=2,app=bandicoot,env=prod"
-microk8s.kubectl run bandicoot-staging --image=gcr.io/kuar-demo/kuard-amd64:2 --replicas=1 --labels="ver=2,app=bandicoot,env=staging"
 
-microk8s.kubectl get deployments --show-labels
-microk8s.kubectl label deployments alpaca-test "canary=true"
-microk8s.kubectl get deployments -L canary
-microk8s.kubectl label deployments alpaca-test "canary-"  # Remove label
-microk8s.kubectl get pods --show-labels
-microk8s.kubectl get pods --selector="ver=2"
-microk8s.kubectl get pods --selector="app=bandicoot,ver=2"
-microk8s.kubectl get pods --selector="app in (alpaca,bandicoot)"
-microk8s.kubectl get deployments --selector="canary"
+## Labels and Selectors
+[Labels and Selectors](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) 
 
-== Cleanup ==
+```
+$ cd lables
+$ kubectl create -f .
+```
 
-microk8s.kubectl delete deployments --all
+```
+kubectl get deployments --show-labels
+kubectl label deployments alpaca-test "canary=true"
+kubectl get deployments -L canary
+kubectl label deployments alpaca-test "canary-"  # Remove label
+kubectl get pods --show-labels
+kubectl get pods --selector="ver=2"
+kubectl get pods --selector="app=bandicoot,ver=2"
+kubectl get pods --selector="app in (alpaca,bandicoot)"
+kubectl get deployments --selector="canary"
+```
+### Cleanup 
+
+```
+kubectl delete deployments --all
+```
