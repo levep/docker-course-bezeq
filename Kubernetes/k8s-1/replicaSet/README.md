@@ -23,32 +23,32 @@ Scaling ReplicaSets
 ```
 
 ### Declaratively Scaling with kubectl apply
-        In a declarative world, we make changes by editing the configuration file in version
-        control and then applying those changes to our cluster. To scale the kuard
-        ReplicaSet, edit the kuard-rs.yaml configuration file and set the replicas count to
-        3:
-        ...
-        spec:
-        replicas: 3
-        ...
+In a declarative world, we make changes by editing the configuration file in version
+control and then applying those changes to our cluster. To scale the kuard
+ReplicaSet, edit the kuard-rs.yaml configuration file and set the replicas count to
+3:
+...
+spec:
+replicas: 3
+...
 ```
         kubectl apply -f kuard-rs.yaml
 ```
 ### Horizontal pod autoscaling (HPA) 
 
-    Autoscaling based on CPU
-        Scaling based on CPU usage is the most common use case for Pod autoscaling.
-        Generally it is most useful for request-based systems that consume CPU
-        proportionally to the number of requests they are receiving, while using a relatively
-        static amount of memory.
-        To scale a ReplicaSet, you can run a command like the following:
+#### Autoscaling based on CPU
+Scaling based on CPU usage is the most common use case for Pod autoscaling.
+Generally it is most useful for request-based systems that consume CPU
+proportionally to the number of requests they are receiving, while using a relatively
+static amount of memory.
+To scale a ReplicaSet, you can run a command like the following:
 ```
         kubectl autoscale rs kuard --min=2 --max=5 --cpu-percent=80
 ```
-        This command creates an autoscaler that scales between two and five replicas with a
-        CPU threshold of 80%. To view, modify, or delete this resource you can use the
-        standard kubectl commands and the horizontalpodautoscalers resource.
-        horizontalpodautoscalers is quite a bit to type, but it can be shortened to hpa:
+This command creates an autoscaler that scales between two and five replicas with a
+CPU threshold of 80%. To view, modify, or delete this resource you can use the
+standard kubectl commands and the horizontalpodautoscalers resource.
+horizontalpodautoscalers is quite a bit to type, but it can be shortened to hpa:
 ```
         kubectl get hpa
 ```
@@ -56,9 +56,9 @@ Scaling ReplicaSets
 ```
         kubectl delete rs kuard
 ```
-        If you don’t want to delete the Pods that are being managed by the ReplicaSet you
-        can set the --cascade flag to false to ensure only the ReplicaSet object is deleted
-        and not the Pods:
+If you don’t want to delete the Pods that are being managed by the ReplicaSet you
+can set the --cascade flag to false to ensure only the ReplicaSet object is deleted
+and not the Pods:
 ```
         kubectl delete rs kuard --cascade=false
 ```
