@@ -46,7 +46,7 @@ Let's create two new namespaces to hold our work. Create the development and pro
 ```kubectl scale deployment cattle --replicas=5 -n=production```
 
 -----
-[Creating namespace](https://kubernetes.io/docs/tasks/administer-cluster/namespaces/#creating-a-new-namespace)
+## [Creating namespace](https://kubernetes.io/docs/tasks/administer-cluster/namespaces/#creating-a-new-namespace)
 
 ```
 kubectl delete -f .\namespace-dev.yaml 
